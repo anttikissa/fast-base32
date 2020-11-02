@@ -7,7 +7,7 @@ export function encode(buffer) {
 	let bits = buffer.length * 8
 	let n = BigInt('0x' + (buffer.toString('hex') || 0))
 
-	if (n !== 0) {
+	if (n !== 0n) {
 		while (bits % 5) {
 			n <<= 1n
 			bits++
