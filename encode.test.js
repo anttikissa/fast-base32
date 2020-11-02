@@ -3,7 +3,7 @@ import { encode } from './encode.js'
 
 test('encode', t => {
 	function checkEncode(input, output) {
-		t.is(encode(input).length, output.length)
+		t.is(encode(input), output)
 	}
 
 	checkEncode(Buffer.of(0), '00')
@@ -12,6 +12,13 @@ test('encode', t => {
 	checkEncode(Buffer.of(0, 0, 0, 0), '0000000')
 	checkEncode(Buffer.of(0, 0, 0, 0, 0), '00000000')
 	checkEncode(Buffer.of(0, 0, 0, 0, 0, 0), '0000000000')
+
+	checkEncode(Buffer.of(0xff), 'zw')
+	checkEncode(Buffer.of(0xff, 0xff), 'zzzg')
+	checkEncode(Buffer.of(0xff, 0xff, 0xff), 'zzzzy')
+	checkEncode(Buffer.of(0xff, 0xff, 0xff, 0xff), 'zzzzzzr')
+	checkEncode(Buffer.of(0xff, 0xff, 0xff, 0xff, 0xff), 'zzzzzzzz')
+	checkEncode(Buffer.of(0xff, 0xff, 0xff, 0xff, 0xff, 0xff), 'zzzzzzzzzw')
 
 	checkEncode(Buffer('', 'hex'), '')
 	checkEncode(Buffer('09', 'hex'), '14')
