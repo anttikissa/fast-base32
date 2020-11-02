@@ -15,11 +15,22 @@ export function encode(buffer) {
 		value = (value << 8) + buffer[i]
 		bits += 8
 
-		while (bits >= 5) {
-			result += alphabet[(value >>> (bits - 5)) & 31]
-			bits -= 5
+		switch (bits) {
+			case 8:
+			case 9:
+				result += alphabet[(value >>> (bits - 5)) & 31]
+				bits -= 5
+				break;
+			case 10:
+			case 11:
+			case 12:
+				result += alphabet[(value >>> (bits - 5)) & 31]
+				result += alphabet[(value >>> (bits - 10)) & 31]
+				bits -= 10
+				break;
 		}
 	}
+
 	if (bits > 0) {
 	    result += alphabet[(value << (5 - bits)) & 31]
 	}
