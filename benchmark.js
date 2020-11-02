@@ -8,26 +8,25 @@ let STR = 'The quick brown fox jumps over the lazy dog.'
 let BUF = Buffer.from(STR)
 let RESULT = encode(STR)
 
-// suite.add('encode string', () => {
-// 	encode(STR)
-// })
-
-console.log('encode', encode(STR, 'Crockford'))
-
 suite.add('encode Buffer', () => {
 	encode(BUF)
+})
+
+suite.add('encode string', () => {
+	encode(STR)
 })
 
 suite.add('base32-encode', () => {
 	base32encode(BUF, 'Crockford')
 })
 
-console.log('base32-encode', base32encode(BUF, 'Crockford'))
+suite.add('base32-encode string', () => {
+	base32encode(Buffer.from(STR), 'Crockford')
+})
 
 // suite.add('decode', () => {
 // 	decode(RESULT)
 // })
-
 
 
 
