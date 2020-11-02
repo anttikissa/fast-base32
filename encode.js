@@ -15,13 +15,10 @@ export function encode(buffer) {
 		value = (value << 8) + buffer[i]
 		bits += 8
 
-		switch (bits) {
-			case 10: case 11: case 12:
-				result += alphabet[(value >>> (bits -= 5)) & 31]
-			case 8: case 9:
-				result += alphabet[(value >>> (bits -= 5)) & 31]
-				break;
+		if (bits >= 10) {
+			result += alphabet[(value >>> (bits -= 5)) & 31]
 		}
+		result += alphabet[(value >>> (bits -= 5)) & 31]
 	}
 
 	if (bits > 0) {
