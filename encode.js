@@ -16,17 +16,10 @@ export function encode(buffer) {
 		bits += 8
 
 		switch (bits) {
-			case 8:
-			case 9:
-				result += alphabet[(value >>> (bits - 5)) & 31]
-				bits -= 5
-				break;
-			case 10:
-			case 11:
-			case 12:
-				result += alphabet[(value >>> (bits - 5)) & 31]
-				result += alphabet[(value >>> (bits - 10)) & 31]
-				bits -= 10
+			case 10: case 11: case 12:
+				result += alphabet[(value >>> (bits -= 5)) & 31]
+			case 8: case 9:
+				result += alphabet[(value >>> (bits -= 5)) & 31]
 				break;
 		}
 	}
