@@ -1,8 +1,8 @@
-import { encode } from './encode.js'
-import { decode } from './decode.js'
+import { encode as e } from './encode.js'
+import { decode as d } from './decode.js'
 
-export encode
-export decode
+export let encode = e
+export let decode = d
 
 export default {
 	encode,
