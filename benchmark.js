@@ -15,12 +15,12 @@ suite.add('encode', () => {
 	encode(BUF)
 })
 
-suite.add('base32-encode', () => {
-	base32encode(BUF, 'Crockford')
-})
-
 suite.add('decode', () => {
 	decode(RESULT)
+})
+
+suite.add('base32-encode', () => {
+	base32encode(BUF, 'Crockford')
 })
 
 suite.add('base32-decode', () => {

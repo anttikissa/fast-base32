@@ -3,7 +3,7 @@ import { decode } from './decode.js'
 
 test('decode', t => {
 	function checkDecode(input, output) {
-		t.is(input.length, decode(output).length)
+		t.deepEqual(input, decode(output))
 	}
 
 	checkDecode(Buffer.of(0), '00')

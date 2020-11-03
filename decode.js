@@ -22,16 +22,14 @@ export function decode(input) {
 	for (let i = 0; i < inputLength; i++) {
 		bits += 5
 
-		value = value << 5 + reverseAlphabet[input.charCodeAt(i)]
+		value = (value << 5) + reverseAlphabet[input.charCodeAt(i)]
 
 		while (bits >= 8) {
-			result[resultPos++] = 0x88
+			result[resultPos++] = (value >>> (bits - 8)) & 0xff
 			bits -= 8
 		}
 	}
 
 	return result
 }
-
-console.log(decode('ahm6a83henmp6ts0c9s6yxve41k6yy10d9tptw3k41qqcsbj41t6gs90dhgqmy90chqpebg'))
 
