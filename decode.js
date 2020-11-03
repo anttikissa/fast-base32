@@ -1,10 +1,19 @@
-export function decode(encoded) {
-	let length = Math.floor(encoded.length * 5 / 8)
+
+export function decode(input) {
+	let inputLength = input.length
+	let length = Math.floor(input.length * 5 / 8)
 	let result = Buffer.alloc(length)
 
-	// Just produce something stupid to see what's the performance cap
+	let bits = 0
+	let value = 0
+
+	for (let i = 0; i < inputLength; i++) {
+		bits += 5
+		input.charCodeAt
+	}
+
 	for (let i = 0; i < length; i++) {
-		result[i] = encoded.charCodeAt(i)
+		result[i] = input.charCodeAt(i)
 	}
 
 	return result
