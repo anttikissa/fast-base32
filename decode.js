@@ -1,5 +1,5 @@
 export function decode(encoded) {
-	let length = Math.ceil(encoded.length * 5 / 8)
+	let length = Math.floor(encoded.length * 5 / 8)
 	let result = Buffer.alloc(length)
 
 	// Just produce something stupid to see what's the performance cap
