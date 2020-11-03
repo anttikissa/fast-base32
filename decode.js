@@ -7,10 +7,10 @@ for (let i = 0; i < alphabet.length; i++) {
 }
 
 function sanitize(input) {
-	return input.replace(/[A-Zilo]/g, (c) => {
+	return input.replace(/[A-Zilo*~$=uU-]/g, (c) => {
 		switch (c) {
-			// Check symbols; ignore them
-			case '*': case '~': case '$': case '=': case 'u': case 'U':
+			// Ignore hyphens are check symbols
+			case '-': case '*': case '~': case '$': case '=': case 'u': case 'U':
 				return ''
 			// Error correction
 			case 'o': case 'O':
@@ -25,6 +25,12 @@ function sanitize(input) {
 	})
 }
 
+function verify(input) {
+	if (!input.match(/^[0123456789abcdefghjkmnpqrstvwxyz]*$/)) {
+		throw new Error(`Invalid input: "${input}"`)
+	}
+}
+
 /**
  * Base32-decode 'input'
  *
@@ -33,6 +39,7 @@ function sanitize(input) {
  */
 export function decode(input) {
 	input = sanitize(input)
+	verify(input)
 
 	let inputLength = input.length
 	let length = Math.floor(input.length * 5 / 8)

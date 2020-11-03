@@ -1,7 +1,7 @@
 import test from 'ava'
 import { decode } from './decode.js'
 
-test('decode', t => {
+test('decode', (t) => {
 	function checkDecode(input, output) {
 		t.deepEqual(input, decode(output))
 	}
@@ -222,8 +222,25 @@ test('decode', t => {
 	checkDecode(Buffer.from('208b5b43f94cd4c170008ff96f06eee244e8f80a9f9a45929644b27328b2c07180fae8c4c4b7569cea3b869ee0727b5a4d08d3f145bdbeebd8d8dc4e16d079d97bf44a166ffaf3e3fa6fe0fc9a39198dbfd7390fa6b12130ec6e268f64874a5d91285768fd91d26a9a53d2eaa04073343509d169c2956fb3612c6c485a835175666bb9272ba94e350138a4da6fb7e86aa3899b6a6b81e987e00dac312713025fda21d008111695de5466d7cd0d8bcf31a7e46068dafda7eedc2fc5b5f827fc459aac9042c13ed3', 'hex'), '425npgzs9kac2w00hzwpy1qew92ehy0akyd4b4mp8js76a5jr1rr1yq8rk2benmwx8xrd7q0e9xnmk88tfrmbfdyxfcdhq2e2v87kpbvyh51cvztyfhzmvz0zjd3j6cdqzbkj3x6p4gk1v3e4t7p91tabp8jgnv8zp8x4tmtaf9en820ect3a2ehd719avxkc4p6rj2tgd8qaskbq4kjqaae6m0kh96tdyvygtn3h6dpmtw1x63y03dc64kh60jzv8gx020h2taxwn36tz6gv2yf66ky8r38vbytfvpw5z2vby17zh2snb4g8b0kxmr')
 })
 
-test('decode mistyped input', t => {
+test('decode mistyped input', (t) => {
 	t.deepEqual(
 		decode('aoblcOdLeifIABCDEFGHJKMNPQRSTVWXYZ'),
-		decode('a0b1c0d1e1f1abcdefghjkmnpqrstvwxyz'))
+		decode('a0b1c0d1e1f1abcdefghjkmnpqrstvwxyz')
+	)
+})
+
+test('check symbols, hyphens and accidental padding is removed', (t) => {
+	t.deepEqual(
+		decode('abcdefgh-1234-5678*~$=uU===='),
+		decode('abcdefgh12345678'),
+	)
+})
+test('invalid input', (t) => {
+	t.throws(
+		() => {
+			decode('invalid!"#€')
+		},
+		// Note that the input has been sanitized first, so q
+		{ message: 'Invalid input: "1nva11d!"#€"' }
+	)
 })
