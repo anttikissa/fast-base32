@@ -11,6 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "ava": "^3.13.0",
+    "base32-decode": "^1.0.0",
     "base32-encode": "^1.1.1",
     "benchmark": "^2.1.4"
   }
