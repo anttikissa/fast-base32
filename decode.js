@@ -1,7 +1,28 @@
+// crockford
+
 let alphabet = '0123456789abcdefghjkmnpqrstvwxyz'
 let reverseAlphabet = Array(256)
 for (let i = 0; i < alphabet.length; i++) {
 	reverseAlphabet[alphabet.charCodeAt(i)] = i
+}
+
+function sanitize(input) {
+	return input.replace(/[A-Zilo]/g, (c) => {
+		switch (c) {
+			// Check symbols; ignore them
+			case '*': case '~': case '$': case '=': case 'u': case 'U':
+				return ''
+			// Error correction
+			case 'o': case 'O':
+				return '0'
+			case 'i': case 'I': case 'l': case 'L':
+				return '1'
+
+			// The rest are transformed to lower case
+			default:
+				return c.toLowerCase()
+		}
+	})
 }
 
 /**
@@ -11,6 +32,8 @@ for (let i = 0; i < alphabet.length; i++) {
  * @returns {Buffer}
  */
 export function decode(input) {
+	input = sanitize(input)
+
 	let inputLength = input.length
 	let length = Math.floor(input.length * 5 / 8)
 	let result = Buffer.alloc(length)
@@ -32,4 +55,3 @@ export function decode(input) {
 
 	return result
 }
-
