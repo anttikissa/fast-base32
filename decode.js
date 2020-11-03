@@ -6,6 +6,10 @@ for (let i = 0; i < alphabet.length; i++) {
 	reverseAlphabet[alphabet.charCodeAt(i)] = i
 }
 
+// Special lookup values
+const SKIP = -1
+const INVALID = -2
+
 function sanitize(input) {
 	return input.replace(/[A-Zilo*~$=uU-]/g, (c) => {
 		switch (c) {
@@ -60,9 +64,19 @@ export function decode(input) {
 	let resultPos = 0
 
 	for (let i = 0; i < inputLength; i++) {
+		let undecoded = input.charCodeAt(i)
+		// if (undecoded < 0 || undecoded >= 128) {
+		// 	throw new Error(`invalid input ${input[i]} at pos ${i}`)
+		// }
+		let decoded = reverseAlphabet[undecoded]
+		// if (decoded === INVALID) {
+		// 	throw new Error(`invalid input ${input[i]} at pos ${i}`)
+		// }
+		// if (decoded === SKIP) {
+		// 	continue
+		// }
 		bits += 5
-
-		value = (value << 5) + reverseAlphabet[input.charCodeAt(i)]
+		value = (value << 5) + decoded
 
 		while (bits >= 8) {
 			output[resultPos++] = (value >>> (bits - 8)) & 0xff
