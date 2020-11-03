@@ -13,7 +13,7 @@ export function encode(input) {
 
 	let length = input.length
 
-	let result = ''
+	let output = ''
 	let bits = 0
 	let value = 0
 
@@ -22,15 +22,15 @@ export function encode(input) {
 		bits += 8
 
 		if ((bits -= 5) >= 5) {
-			result += alphabet[(value >>> bits) & 31]
+			output += alphabet[(value >>> bits) & 31]
 			bits -= 5
 		}
-		result += alphabet[(value >>> bits) & 31]
+		output += alphabet[(value >>> bits) & 31]
 	}
 
 	if (bits > 0) {
-	    result += alphabet[(value << (5 - bits)) & 31]
+		output += alphabet[(value << (5 - bits)) & 31]
 	}
 
-	return result
+	return output
 }

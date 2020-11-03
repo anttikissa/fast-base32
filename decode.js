@@ -10,12 +10,22 @@ function sanitize(input) {
 	return input.replace(/[A-Zilo*~$=uU-]/g, (c) => {
 		switch (c) {
 			// Ignore hyphens are check symbols
-			case '-': case '*': case '~': case '$': case '=': case 'u': case 'U':
+			case '-':
+			case '*':
+			case '~':
+			case '$':
+			case '=':
+			case 'u':
+			case 'U':
 				return ''
 			// Error correction
-			case 'o': case 'O':
+			case 'o':
+			case 'O':
 				return '0'
-			case 'i': case 'I': case 'l': case 'L':
+			case 'i':
+			case 'I':
+			case 'l':
+			case 'L':
 				return '1'
 
 			// The rest are transformed to lower case
@@ -42,8 +52,8 @@ export function decode(input) {
 	verify(input)
 
 	let inputLength = input.length
-	let length = Math.floor(input.length * 5 / 8)
-	let result = Buffer.alloc(length)
+	let length = Math.floor((input.length * 5) / 8)
+	let output = Buffer.alloc(length)
 
 	let bits = 0
 	let value = 0
@@ -55,10 +65,10 @@ export function decode(input) {
 		value = (value << 5) + reverseAlphabet[input.charCodeAt(i)]
 
 		while (bits >= 8) {
-			result[resultPos++] = (value >>> (bits - 8)) & 0xff
+			output[resultPos++] = (value >>> (bits - 8)) & 0xff
 			bits -= 8
 		}
 	}
 
-	return result
+	return output
 }
