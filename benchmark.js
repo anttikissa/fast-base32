@@ -3,37 +3,43 @@ import { encode, decode } from './index.js'
 import base32encode from 'base32-encode'
 import base32decode from 'base32-decode'
 
+let [_1, _2, ...args] = process.argv
+
 let suite = new Benchmark.Suite
 
 let STR = 'The quick brown fox jumps over the lazy dog.'
 let BUF = Buffer.from(STR)
 let RESULT = encode(STR)
 
-console.log('result', RESULT)
+function addSuite(name, f) {
+	if (args.length === 0 || args.some((arg) => name.match(RegExp(arg, 'i')))) {
+		suite.add(name, f)
+	}
+}
 
-suite.add('encode', () => {
+addSuite('encode', () => {
 	encode(BUF)
 })
 
-suite.add('decode', () => {
+addSuite('decode', () => {
 	decode(RESULT)
 })
 
-suite.add('base32-encode', () => {
+addSuite('base32-encode', () => {
 	base32encode(BUF, 'Crockford')
 })
 
-suite.add('base32-decode', () => {
+addSuite('base32-decode', () => {
 	base32decode(RESULT, 'Crockford')
 })
 
-suite.add('encode string', () => {
+addSuite('encode string', () => {
 	encode(STR)
 })
 
 
 
-suite.add('base32-encode string', () => {
+addSuite('base32-encode string', () => {
 	base32encode(Buffer.from(STR), 'Crockford')
 })
 
