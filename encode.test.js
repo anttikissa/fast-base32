@@ -108,10 +108,26 @@ test('encode rfc4648', (t) => {
 		padding: '='
 	})
 
+	t.deepEqual(rfcEncode(''), '')
 	t.deepEqual(rfcEncode('f'), 'MY======')
 	t.deepEqual(rfcEncode('fo'), 'MZXQ====')
 	t.deepEqual(rfcEncode('foo'), 'MZXW6===')
 	t.deepEqual(rfcEncode('foob'), 'MZXW6YQ=')
 	t.deepEqual(rfcEncode('fooba'), 'MZXW6YTB')
 	t.deepEqual(rfcEncode('foobar'), 'MZXW6YTBOI======')
+})
+
+test('encode rfc4648-hex', (t) => {
+	let rfcHexEncode = encode.configure({
+		alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUV',
+		padding: '='
+	})
+
+	t.deepEqual(rfcHexEncode(''), '')
+	t.deepEqual(rfcHexEncode('f'), 'CO======')
+	t.deepEqual(rfcHexEncode('fo'), 'CPNG====')
+	t.deepEqual(rfcHexEncode('foo'), 'CPNMU===')
+	t.deepEqual(rfcHexEncode('foob'), 'CPNMUOG=')
+	t.deepEqual(rfcHexEncode('fooba'), 'CPNMUOJ1')
+	t.deepEqual(rfcHexEncode('foobar'), 'CPNMUOJ1E8======')
 })

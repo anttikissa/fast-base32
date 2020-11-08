@@ -157,7 +157,32 @@ test('decode rfc4648', (t) => {
 	// lowercase is ok, too
 	t.deepEqual(rfcDecode('mzxw6ytb'), Buffer.from('fooba'))
 
-	// without padding is ok, too
+	// padding is optional
 	t.deepEqual(rfcDecode('MZXW6YTBOI'), Buffer.from('foobar'))
+})
 
+test('decode rfc4648-hex', (t) => {
+	let rfcHexDecode = decode.configure({
+		alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUV',
+		sanitize: (c) => {
+			// Remove padding
+			if (c === '=') {
+				return ''
+			}
+			return c.toUpperCase()
+		}
+	})
+
+	t.deepEqual(rfcHexDecode('CO======'), Buffer.from('f'))
+	t.deepEqual(rfcHexDecode('CPNG===='), Buffer.from('fo'))
+	t.deepEqual(rfcHexDecode('CPNMU==='), Buffer.from('foo'))
+	t.deepEqual(rfcHexDecode('CPNMUOG='), Buffer.from('foob'))
+	t.deepEqual(rfcHexDecode('CPNMUOJ1'), Buffer.from('fooba'))
+	t.deepEqual(rfcHexDecode('CPNMUOJ1E8======'), Buffer.from('foobar'))
+
+	// lowercase is ok, too
+	t.deepEqual(rfcHexDecode('cpnmuoj1'), Buffer.from('fooba'))
+
+	// padding is optional
+	t.deepEqual(rfcHexDecode('CPNMUOJ1E8'), Buffer.from('foobar'))
 })
