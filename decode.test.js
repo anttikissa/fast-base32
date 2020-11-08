@@ -115,6 +115,7 @@ test('check symbols, hyphens and accidental padding is removed', (t) => {
 		decode('abcdefgh12345678'),
 	)
 })
+
 test('invalid input', (t) => {
 	// The default decode maps invalid characters to 0 but does not throw
 	t.deepEqual(
@@ -132,4 +133,31 @@ test('invalid input', (t) => {
 		},
 		{ message: 'Invalid input: "invalid!"#€"' }
 	)
+})
+
+test('rfc4648', (t) => {
+	let rfcDecode = decode.configure({
+		alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
+		sanitize: (c) => {
+			// Remove padding
+			if (c === '=') {
+				return ''
+			}
+			return c.toUpperCase()
+		}
+	})
+
+	t.deepEqual(rfcDecode('MY======'), Buffer.from('f'))
+	t.deepEqual(rfcDecode('MZXQ===='), Buffer.from('fo'))
+	t.deepEqual(rfcDecode('MZXW6==='), Buffer.from('foo'))
+	t.deepEqual(rfcDecode('MZXW6YQ='), Buffer.from('foob'))
+	t.deepEqual(rfcDecode('MZXW6YTB'), Buffer.from('fooba'))
+	t.deepEqual(rfcDecode('MZXW6YTBOI======'), Buffer.from('foobar'))
+
+	// lowercase is ok, too
+	t.deepEqual(rfcDecode('mzxw6ytb'), Buffer.from('fooba'))
+
+	// without padding is ok, too
+	t.deepEqual(rfcDecode('MZXW6YTBOI'), Buffer.from('foobar'))
+
 })

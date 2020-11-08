@@ -50,7 +50,7 @@ function getReverseAlphabet({ alphabet, sanitize }) {
 
     // Then patch the reverse alphabet so that for every character c, c maps to the
     // same value as sanitize(c). While at it, check the sanity of the sanitizer.
-    for (let i = 0; i < 256; i++) {
+    for (let i = 0; i < 128; i++) {
         let char = String.fromCharCode(i)
         let sanitizedChar = sanitize(char)
         if (alphabet.indexOf(char) !== -1) {
@@ -63,8 +63,10 @@ function getReverseAlphabet({ alphabet, sanitize }) {
             result[i] = SKIP
         } else {
             let sanitizedCharCode = sanitizedChar.charCodeAt(0)
+
             if (sanitizedCharCode < 0 || sanitizedCharCode >= 256) {
-                throw new Error(`sanitizer returned an invalid character: '${sanitizedChar}'`)
+                throw new Error(`sanitize('${char}' (${i})) returned an invalid character: ` +
+                    `'${sanitizedChar}' (${sanitizedCharCode})`)
             }
             result[i] = result[sanitizedCharCode]
         }
