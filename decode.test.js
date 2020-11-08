@@ -116,11 +116,20 @@ test('check symbols, hyphens and accidental padding is removed', (t) => {
 	)
 })
 test('invalid input', (t) => {
+	// The default decode maps invalid characters to 0 but does not throw
+	t.deepEqual(
+		decode('invalid!"#€'),
+		decode('1nva11d0000')
+	)
+
+	let verifyingDecode = decode.configure({
+		verifyInput: true
+	})
+
 	t.throws(
 		() => {
-			return decode('invalid!"#€')
+			return verifyingDecode('invalid!"#€')
 		},
-		// Note that the input has been sanitized first, so q
-		{ message: 'Invalid input: "1nva11d!"#€"' }
+		{ message: 'Invalid input: "invalid!"#€"' }
 	)
 })
