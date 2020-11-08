@@ -135,7 +135,7 @@ test('invalid input', (t) => {
 	)
 })
 
-test('rfc4648', (t) => {
+test('decode rfc4648', (t) => {
 	let rfcDecode = decode.configure({
 		alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
 		sanitize: (c) => {
