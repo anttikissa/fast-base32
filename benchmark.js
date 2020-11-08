@@ -58,4 +58,22 @@ suite.on('complete', function() {
 	console.log('Fastest is ' + this.filter('fastest').map('name'))
 })
 
+/*
+buffer concat x 6,334,224 ops/sec ±3.28% (83 runs sampled)
+buffer subarray x 5,848,524 ops/sec ±1.13% (90 runs sampled)
+buffer slice x 24,779,496 ops/sec ±1.64% (84 runs sampled)
+
+addSuite('buffer concat', () => {
+	Buffer.concat([BUF], 40)
+})
+
+addSuite('buffer subarray', () => {
+	BUF.subarray(0, 40)
+})
+
+addSuite('buffer slice', () => {
+	BUF.slice(0, 40)
+})
+*/
+
 suite.run({ async: true })
