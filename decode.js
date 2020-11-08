@@ -6,9 +6,7 @@ for (let i = 0; i < alphabet.length; i++) {
 	reverseAlphabet[alphabet.charCodeAt(i)] = i
 }
 
-// Special lookup values
-const SKIP = -1
-const INVALID = -2
+let verifyInput = false
 
 function sanitize(input) {
 	return input.replace(/[A-Zilo*~$=uU-]/g, (c) => {
@@ -53,7 +51,9 @@ function verify(input) {
  */
 export function decode(input) {
 	input = sanitize(input)
-	verify(input)
+	if (verifyInput) {
+		verify(input)
+	}
 
 	let inputLength = input.length
 	let length = Math.floor((input.length * 5) / 8)
