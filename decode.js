@@ -40,7 +40,7 @@ const defaultOptions = {
 	 *
 	 * @param {String} input
 	 */
-	verify: (input) => {
+	verify: function (input) {
 		for (let c of input) {
 			if (this.alphabet.indexOf(c) === -1) {
 				throw new Error(`unrecognized input character '${c}'`)

@@ -3,6 +3,7 @@ import base32 from './index.js'
 
 import optionsCrockford from './options.crockford.js'
 import optionsRFC4648 from './options.rfc4648.js'
+import optionsRFC4648Hex from './options.rfc4648-hex.js'
 
 test('crockford', (t) => {
 	t.is(base32.encode('Hello world!'), '91jprv3f41vpywkccggg')
@@ -72,5 +73,37 @@ test('RFC4648', (t) => {
 	t.deepEqual(
 		rfcDecodeNoVerify('jbswyxdpebxwxxtmmqqq===='),
 		Buffer.from('000000000000000000000000', 'hex')
+	)
+})
+
+test('RFC4648-HEX', (t) => {
+	let rfcHex = base32.configure(optionsRFC4648Hex)
+
+	t.is(rfcHex.encode('fo'), 'CPNG====')
+	t.is(rfcHex.encode('foobar'), 'CPNMUOJ1E8======')
+})
+
+test('default verify()', (t) => {
+	let base32Strict = base32.configure({
+		alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUV',
+		decodeOptions: {
+			verifyInput: true
+		}
+	})
+
+	t.is(base32Strict.encode('Hello world!'), '91IMOR3F41RMUSJCCGGG')
+
+	t.deepEqual(
+		base32Strict.decode('91IMOR3F41RMUSJCCGGG'),
+		Buffer.from('Hello world!')
+	)
+
+	t.throws(
+		() => {
+			base32Strict.decode('91IMOR3F41RMUSJCCGGZ')
+		},
+		{
+			message: "unrecognized input character 'Z'"
+		}
 	)
 })
