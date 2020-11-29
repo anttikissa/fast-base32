@@ -1,6 +1,28 @@
 // Base32 encoding according to https://tools.ietf.org/html/rfc4648
 //
-// To use a version without padding:
+// By default, uses padding and is strict about what it can decode.
+//
+// To encode without padding, configure with encodeOptions:
+//
+// import base32 from 'fast-base32'
+//
+// let base32NoPadding = base32.configure({
+//   ...optionsRfc4648,
+//   encodeOptions: {
+//     padding: null
+//   }
+// })
+//
+// To be less strict (i.e. never throw on invalid input), configure with:
+//
+// let base32NotSoStrict = base32.configure({
+//   ...optionsRfc4648,
+//   decodeOptions: {
+//     verifyInput: false
+//   }
+// })
+
+
 export default {
 	alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
 

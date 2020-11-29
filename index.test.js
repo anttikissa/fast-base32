@@ -2,8 +2,9 @@ import test from 'ava'
 import base32 from './index.js'
 
 import optionsCrockford from './options.crockford.js'
-import optionsRFC4648 from './options.rfc4648.js'
-import optionsRFC4648Hex from './options.rfc4648-hex.js'
+import optionsRfc4648 from './options.rfc4648.js'
+import optionsRfc4648Hex from './options.rfc4648-hex.js'
+import optionsZbase32 from './options.zbase32.js'
 
 test('Crockford lowercase', (t) => {
 	t.is(base32.encode('Hello world!'), '91jprv3f41vpywkccggg')
@@ -37,7 +38,7 @@ test('Crockford uppercase', (t) => {
 })
 
 test('RFC4648', (t) => {
-	let rfc = base32.configure(optionsRFC4648)
+	let rfc = base32.configure(optionsRfc4648)
 	t.is(rfc.encode('Hello world!'), 'JBSWY3DPEB3W64TMMQQQ====')
 	t.is(rfc.encode('foobar'), 'MZXW6YTBOI======')
 
@@ -81,11 +82,61 @@ test('RFC4648', (t) => {
 	)
 })
 
+test('Configuring RFC4648', (t) => {
+	let base32NoPadding = base32.configure({
+		...optionsRfc4648,
+		encodeOptions: {
+			padding: null
+		}
+	})
+
+	t.is(base32NoPadding.encode('Hello world!'), 'JBSWY3DPEB3W64TMMQQQ')
+
+	let base32NotSoStrict = base32.configure({
+		...optionsRfc4648,
+		decodeOptions: {
+			verifyInput: false
+		}
+	})
+
+	t.is(
+		base32NotSoStrict.decode('JBSWY3DPEB3W64TMMQQQ').toString(),
+		`Hello world!`
+	)
+
+	// Check that other decodeOptions such as padding removal still works
+	t.is(
+		base32NotSoStrict.decode('JBSWY3DPEB3W64TMMQQQ===').toString(),
+		`Hello world!`
+	)
+})
+
 test('RFC4648-HEX', (t) => {
-	let rfcHex = base32.configure(optionsRFC4648Hex)
+	let rfcHex = base32.configure(optionsRfc4648Hex)
 
 	t.is(rfcHex.encode('fo'), 'CPNG====')
 	t.is(rfcHex.encode('foobar'), 'CPNMUOJ1E8======')
+})
+
+test('z-base-32', (t) => {
+	let zbase32 = base32.configure(optionsZbase32)
+
+	t.is(
+		zbase32.encode(Buffer.of(0b1111_0000, 0b1011_1111, 0b1100_0111)),
+		'6n9hq'
+	)
+	t.is(
+		zbase32.encode(Buffer.of(0b1101_0100, 0b0111_1010, 0b0000_0100)),
+		'4t7ye'
+	)
+
+	t.is(zbase32.encode('hello'), 'pb1sa5dx')
+	t.is(zbase32.decode('pb1sa5dx').toString(), 'hello')
+	t.is(zbase32.encode('Hello World!'), 'jb1sa5dxrbms6huccooo')
+	t.is(
+		zbase32.encode('The quick brown fox jumps over the lazy dog.'),
+		'ktwgkedtqiwsg43ycj3g675qrbug66bypj4s4hdurbzzc3m1rb4go3jyptozw6jyctzsqmo'
+	)
 })
 
 test('default verify()', (t) => {

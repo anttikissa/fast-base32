@@ -1,6 +1,4 @@
-// Base32 encoding according to https://tools.ietf.org/html/rfc4648
-//
-// To use a version without padding:
+// Base32 hex encoding according to https://tools.ietf.org/html/rfc4648
 export default {
 	alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUV',
 
