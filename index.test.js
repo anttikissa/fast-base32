@@ -12,6 +12,11 @@ test('crockford', (t) => {
 		base32.decode('9IjP-rV3f-4lvp-ywkc-cGgG===Uu*~$').toString('ascii'),
 		'Hello world!'
 	)
+
+	t.is(
+		base32.encode('The quick brown fox jumps over the lazy dog.'),
+		'ahm6a83henmp6ts0c9s6yxve41k6yy10d9tptw3k41qqcsbj41t6gs90dhgqmy90chqpebg'
+	)
 })
 
 test('CROCKFORD', (t) => {
