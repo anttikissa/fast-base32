@@ -1,3 +1,5 @@
+// Crockford's Base32 (https://www.crockford.com/base32.html)
+// Check symbols are accepted (and ignored) but not checked.
 export default {
 	alphabet: '0123456789ABCDEFGHJKMNPQRSTVWXYZ',
 
