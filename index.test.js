@@ -5,7 +5,7 @@ import optionsCrockford from './options.crockford.js'
 import optionsRFC4648 from './options.rfc4648.js'
 import optionsRFC4648Hex from './options.rfc4648-hex.js'
 
-test('crockford', (t) => {
+test('Crockford lowercase', (t) => {
 	t.is(base32.encode('Hello world!'), '91jprv3f41vpywkccggg')
 	t.is(base32.decode('91jprv3f41vpywkccggg').toString('ascii'), 'Hello world!')
 	t.is(
@@ -19,7 +19,7 @@ test('crockford', (t) => {
 	)
 })
 
-test('CROCKFORD', (t) => {
+test('Crockford uppercase', (t) => {
 	let CROCKFORD = base32.configure(optionsCrockford)
 	t.is(CROCKFORD.encode('Hello world!'), '91JPRV3F41VPYWKCCGGG')
 	t.is(
