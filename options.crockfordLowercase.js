@@ -1,5 +1,5 @@
 export default {
-	alphabet: '0123456789ABCDEFGHJKMNPQRSTVWXYZ',
+	alphabet: '0123456789abcdefghjkmnpqrstvwxyz',
 
 	encodeOptions: {
 		padding: null
@@ -7,7 +7,7 @@ export default {
 
 	decodeOptions: {
 		sanitize: (input) => {
-			return input.replace(/[a-zILO*~$=uU-]/g, (c) => {
+			return input.replace(/[A-Zilo*~$=uU-]/g, (c) => {
 				switch (c) {
 					// Ignore hyphens and check symbols
 					case '-':
@@ -31,7 +31,7 @@ export default {
 
 					// The rest are transformed to lower case
 					default:
-						return c.toUpperCase()
+						return c.toLowerCase()
 				}
 			})
 		},

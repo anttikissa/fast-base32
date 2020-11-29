@@ -1,4 +1,4 @@
-import defaultOptions from './options.crockford.js'
+import defaultOptions from './options.crockfordLowercase.js'
 
 let defaultEncodeOptions = {
 	alphabet: defaultOptions.alphabet,
