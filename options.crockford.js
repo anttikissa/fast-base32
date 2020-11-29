@@ -29,7 +29,7 @@ export default {
 					case 'L':
 						return '1'
 
-					// The rest are transformed to lower case
+					// The rest are transformed to upper case
 					default:
 						return c.toUpperCase()
 				}
