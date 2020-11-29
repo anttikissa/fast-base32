@@ -124,6 +124,7 @@ test('invalid input', (t) => {
 	)
 
 	let verifyingDecode = decode.configure({
+		...decode.options,
 		verifyInput: true
 	})
 
@@ -133,32 +134,6 @@ test('invalid input', (t) => {
 		},
 		{ message: 'Invalid input: "invalid!"#€"' }
 	)
-})
-
-test('decode rfc4648', (t) => {
-	let rfcDecode = decode.configure({
-		alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
-		sanitize: (c) => {
-			// Remove padding
-			if (c === '=') {
-				return ''
-			}
-			return c.toUpperCase()
-		}
-	})
-
-	t.deepEqual(rfcDecode('MY======'), Buffer.from('f'))
-	t.deepEqual(rfcDecode('MZXQ===='), Buffer.from('fo'))
-	t.deepEqual(rfcDecode('MZXW6==='), Buffer.from('foo'))
-	t.deepEqual(rfcDecode('MZXW6YQ='), Buffer.from('foob'))
-	t.deepEqual(rfcDecode('MZXW6YTB'), Buffer.from('fooba'))
-	t.deepEqual(rfcDecode('MZXW6YTBOI======'), Buffer.from('foobar'))
-
-	// lowercase is ok, too
-	t.deepEqual(rfcDecode('mzxw6ytb'), Buffer.from('fooba'))
-
-	// padding is optional
-	t.deepEqual(rfcDecode('MZXW6YTBOI'), Buffer.from('foobar'))
 })
 
 test('decode rfc4648-hex', (t) => {

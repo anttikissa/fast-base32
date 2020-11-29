@@ -1,12 +1,19 @@
-import defaultOptions from './options.crockfordLowercase.js'
+import optionsCrockfordLowercase from './options.crockfordLowercase.js'
 
-let defaultEncodeOptions = {
-	alphabet: defaultOptions.alphabet,
-	...defaultOptions.encodeOptions
+const defaultOptions = {
+	// Alphabet must always be specified, therefore no default
+	// alphabet: ''
+
+	/**
+	 * If truthy, append to the encoded string until its length is divisible
+	 * by 8.
+	 * @type {?String}
+	 */
+	padding: null
 }
 
 function configure(encodeOptions) {
-	const options = { ...defaultEncodeOptions, ...encodeOptions }
+	const options = { ...defaultOptions, ...encodeOptions }
 
 	const { alphabet, padding } = options
 
@@ -56,4 +63,9 @@ function configure(encodeOptions) {
 	return encode
 }
 
-export const encode = configure(defaultOptions)
+let defaultEncodeOptions = {
+	alphabet: optionsCrockfordLowercase.alphabet,
+	...optionsCrockfordLowercase.encodeOptions
+}
+
+export const encode = configure(defaultEncodeOptions)

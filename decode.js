@@ -1,8 +1,39 @@
-import defaultOptions from './options.crockfordLowercase.js'
+import optionsCrockfordLowercase from './options.crockfordLowercase.js'
 
-let defaultDecodeOptions = {
-	alphabet: defaultOptions.alphabet,
-	...defaultOptions.decodeOptions
+const defaultOptions = {
+	// Alphabet must always be specified, therefore no default
+	// alphabet: ''
+
+	/**
+	 * Map input before decoding.
+	 *
+	 * @param {String} str A character
+	 * @returns {String} A character that 'str' maps to, or an empty string if
+	 * it is to be removed
+	 */
+	sanitize: (str) => str,
+
+	/**
+	 * If true, call verify() before decoding
+	 * @type {Boolean}
+	 */
+	verifyInput: false,
+
+	/**
+	 * Called with the input as its argument before decoding if verifyInput is
+	 * true.
+	 *
+	 * Should throw in case of invalid input.
+	 *
+	 * @param {String} input
+	 */
+	verify: (input) => {
+		for (let c of input) {
+			if (this.alphabet.indexOf(c) === -1) {
+				throw new Error(`unrecognized input character '${c}'`)
+			}
+		}
+	}
 }
 
 const SKIP = -1
@@ -49,9 +80,16 @@ function getReverseAlphabet({ alphabet, sanitize }) {
 }
 
 function configure(decodeOptions) {
-	const options = { ...defaultDecodeOptions, ...decodeOptions }
-
+	const options = { ...defaultOptions, ...decodeOptions }
 	const { verifyInput, verify } = options
+
+	if (!options.alphabet) {
+		throw new Error('configure: missing alphabet')
+	}
+	if (options.alphabet.length !== 32) {
+		throw new Error('configure: alphabet length must be 32')
+	}
+
 	const reverseAlphabet = getReverseAlphabet(options)
 
 	/**
@@ -62,7 +100,7 @@ function configure(decodeOptions) {
 	 */
 	function decode(input) {
 		if (verifyInput) {
-			verify(input)
+			verify.call(options, input)
 		}
 
 		let inputLength = input.length
@@ -106,4 +144,9 @@ function configure(decodeOptions) {
 	return decode
 }
 
-export const decode = configure(defaultOptions)
+const defaultDecodeOptions = {
+	alphabet: optionsCrockfordLowercase.alphabet,
+	...optionsCrockfordLowercase.decodeOptions
+}
+
+export const decode = configure(defaultDecodeOptions)

@@ -102,21 +102,6 @@ test('encode', t => {
 	checkEncode(Buffer.from('a41f8dc24e8d4f23861a32d3e994e0e3e9f936b13ffeeec44f203bb183b89c2db09ea02a9c76f15ee47c7b67cae87745a56585e0f7cb256072541aca37faa0588b384e823af82fb6758cfdb0319c62', 'hex'), 'mgfrvgjehn7j71gt6b9yk570wfmzjdnh7zzexh2f40xv30xrkgpv17n05ae7dwaywhy7psyax1vmb9b5gqgffjs5c1s586pa6zxa0p4b71784eqr5yv7b37xp0rsrrg')
 })
 
-test('encode rfc4648', (t) => {
-	let rfcEncode = encode.configure({
-		alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
-		padding: '='
-	})
-
-	t.deepEqual(rfcEncode(''), '')
-	t.deepEqual(rfcEncode('f'), 'MY======')
-	t.deepEqual(rfcEncode('fo'), 'MZXQ====')
-	t.deepEqual(rfcEncode('foo'), 'MZXW6===')
-	t.deepEqual(rfcEncode('foob'), 'MZXW6YQ=')
-	t.deepEqual(rfcEncode('fooba'), 'MZXW6YTB')
-	t.deepEqual(rfcEncode('foobar'), 'MZXW6YTBOI======')
-})
-
 test('encode rfc4648-hex', (t) => {
 	let rfcHexEncode = encode.configure({
 		alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUV',
