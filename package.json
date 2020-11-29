@@ -15,5 +15,12 @@
     "base32-encode": "^1.1.1",
     "benchmark": "^2.1.4",
     "prettier": "^2.1.2"
+  },
+  "prettier": {
+    "useTabs": true,
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 80,
+    "trailingComma": "none"
   }
 }
