@@ -2,10 +2,11 @@ const SKIP = -1
 
 let defaultOptions = {
 	alphabet: '0123456789abcdefghjkmnpqrstvwxyz',
+
 	sanitize: function (input) {
 		return input.replace(/[A-Zilo*~$=uU-]/g, (c) => {
 			switch (c) {
-				// Ignore hyphens are check symbols
+				// Ignore hyphens and check symbols
 				case '-':
 				case '*':
 				case '~':
@@ -14,6 +15,7 @@ let defaultOptions = {
 				case 'u':
 				case 'U':
 					return ''
+
 				// Error correction
 				case 'o':
 				case 'O':
@@ -30,6 +32,8 @@ let defaultOptions = {
 			}
 		})
 	},
+
+	// Verify input before decoding?
 	verifyInput: false,
 	verify: function (input) {
 		if (!input.match(/^[0-9a-zA-Z*~$=]*$/)) {
@@ -39,11 +43,11 @@ let defaultOptions = {
 }
 
 function getReverseAlphabet({ alphabet, sanitize }) {
-	let result = Array(256)
+	let result = Array(128)
 
 	// By default, map all characters to their indexes in alphabet.
 	// If they don't exist in the alphabet, map them to 0.
-	for (let i = 0; i < 256; i++) {
+	for (let i = 0; i < 128; i++) {
 		let idx = alphabet.indexOf(String.fromCharCode(i))
 		result[i] = idx !== -1 ? idx : 0
 	}
@@ -66,7 +70,7 @@ function getReverseAlphabet({ alphabet, sanitize }) {
 		} else {
 			let sanitizedCharCode = sanitizedChar.charCodeAt(0)
 
-			if (sanitizedCharCode < 0 || sanitizedCharCode >= 256) {
+			if (sanitizedCharCode < 0 || sanitizedCharCode >= 128) {
 				throw new Error(
 					`sanitize('${char}' (${i})) returned an invalid character: ` +
 						`'${sanitizedChar}' (${sanitizedCharCode})`
