@@ -157,9 +157,4 @@ function configure(decodeOptions) {
 	return decode
 }
 
-const defaultDecodeOptions = {
-	alphabet: optionsCrockfordLowercase.alphabet,
-	...optionsCrockfordLowercase.decodeOptions
-}
-
-export const decode = configure(defaultDecodeOptions)
+export const decode = configure(optionsCrockfordLowercase)

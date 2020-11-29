@@ -8,48 +8,43 @@
 //
 // let base32NoPadding = base32.configure({
 //   ...optionsRfc4648,
-//   encodeOptions: {
-//     padding: null
-//   }
+//   padding: null
 // })
 //
 // To be less strict (i.e. never throw on invalid input), configure with:
 //
 // let base32NotSoStrict = base32.configure({
 //   ...optionsRfc4648,
-//   decodeOptions: {
-//     verifyInput: false
-//   }
+//   verifyInput: false
 // })
-
 
 export default {
 	alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
 
-	encodeOptions: {
-		padding: '='
+	// Encode options
+
+	padding: '=',
+
+	// Decode options
+
+	sanitize: (input) => {
+		// Remove padding
+		return input.replace(/=/g, '')
 	},
 
-	decodeOptions: {
-		sanitize: (input) => {
-			// Remove padding
-			return input.replace(/=/g, '')
-		},
+	// Verify input before decoding?
+	verifyInput: true,
 
-		// Verify input before decoding?
-		verifyInput: true,
+	// Function to do that
+	verify: function (input) {
+		// Padding missing?
+		if (input.length % 8) {
+			throw new Error(`Input length not divisible by 8: "${input}"`)
+		}
 
-		// Function to do that
-		verify: function (input) {
-			// Padding missing?
-			if (input.length % 8) {
-				throw new Error(`Input length not divisible by 8: "${input}"`)
-			}
-
-			// Invalid characters?
-			if (!input.match(/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]*=*$/)) {
-				throw new Error(`Invalid input: "${input}"`)
-			}
+		// Invalid characters?
+		if (!input.match(/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]*=*$/)) {
+			throw new Error(`Invalid input: "${input}"`)
 		}
 	}
 }

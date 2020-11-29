@@ -85,18 +85,14 @@ test('RFC4648', (t) => {
 test('Configuring RFC4648', (t) => {
 	let base32NoPadding = base32.configure({
 		...optionsRfc4648,
-		encodeOptions: {
-			padding: null
-		}
+		padding: null
 	})
 
 	t.is(base32NoPadding.encode('Hello world!'), 'JBSWY3DPEB3W64TMMQQQ')
 
 	let base32NotSoStrict = base32.configure({
 		...optionsRfc4648,
-		decodeOptions: {
-			verifyInput: false
-		}
+		verifyInput: false
 	})
 
 	t.is(
@@ -142,9 +138,7 @@ test('z-base-32', (t) => {
 test('default verify()', (t) => {
 	let base32Strict = base32.configure({
 		alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUV',
-		decodeOptions: {
-			verifyInput: true
-		}
+		verifyInput: true
 	})
 
 	t.is(base32Strict.encode('Hello world!'), '91IMOR3F41RMUSJCCGGG')

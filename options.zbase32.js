@@ -2,9 +2,7 @@
 export default {
 	alphabet: 'ybndrfg8ejkmcpqxot1uwisza345h769',
 
-	encodeOptions: {},
+	// Decode options
 
-	decodeOptions: {
-		sanitize: (input) => input.toLowerCase()
-	}
+	sanitize: (input) => input.toLowerCase()
 }

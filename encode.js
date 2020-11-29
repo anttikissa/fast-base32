@@ -63,9 +63,4 @@ function configure(encodeOptions) {
 	return encode
 }
 
-let defaultEncodeOptions = {
-	alphabet: optionsCrockfordLowercase.alphabet,
-	...optionsCrockfordLowercase.encodeOptions
-}
-
-export const encode = configure(defaultEncodeOptions)
+export const encode = configure(optionsCrockfordLowercase)
