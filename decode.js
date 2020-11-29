@@ -5,13 +5,26 @@ const defaultOptions = {
 	// alphabet: ''
 
 	/**
-	 * Map input before decoding.
+	 * Map input before decoding. Used to make decode() tolerant against errors
+	 * in input and to strip unwanted input characters.
 	 *
-	 * @param {String} str A character
-	 * @returns {String} A character that 'str' maps to, or an empty string if
-	 * it is to be removed
+	 * For example, sanitize() could map:
+	 *
+	 * - 'I' => '1'
+	 * - 'O' => '0',
+	 * - '-' => ''
+	 *
+	 * making the input 'II23-O123' equivalent to '11230123'
+	 *
+	 * As an optimization, sanitize() will only be called once for every
+	 * character in the ASCII character range and its result will be embedded in
+	 * a lookup table used by decode().
+	 *
+	 * @param {String} c Input character
+	 * @returns {String} Possible remapped character, or an empty string if it
+	 * is to be removed
 	 */
-	sanitize: (str) => str,
+	sanitize: (c) => c,
 
 	/**
 	 * If true, call verify() before decoding
@@ -21,7 +34,7 @@ const defaultOptions = {
 
 	/**
 	 * Called with the input as its argument before decoding if verifyInput is
-	 * true.
+	 * true. 'this' is the options object.
 	 *
 	 * Should throw in case of invalid input.
 	 *
