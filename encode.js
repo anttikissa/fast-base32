@@ -1,10 +1,12 @@
-let defaultOptions = {
-	alphabet: '0123456789abcdefghjkmnpqrstvwxyz',
-	padding: null,
+import defaultOptions from './options.crockford.js'
+
+let defaultEncodeOptions = {
+	alphabet: defaultOptions.alphabet,
+	...defaultOptions.encodeOptions
 }
 
-function configure(options) {
-	options = {...defaultOptions, ...options}
+function configure(encodeOptions) {
+	const options = { ...defaultEncodeOptions, ...encodeOptions }
 
 	const { alphabet, padding } = options
 
