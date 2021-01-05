@@ -92,6 +92,15 @@ function getReverseAlphabet({ alphabet, sanitize }) {
 	return result
 }
 
+// Buffer fallback for browsers
+function allocBuffer(length) {
+	if (typeof Buffer !== 'undefined') {
+		return Buffer.alloc(length)
+	} else {
+		return new Uint8Array(length)
+	}
+}
+
 function configure(decodeOptions) {
 	const options = { ...defaultOptions, ...decodeOptions }
 	const { verifyInput, verify } = options
@@ -109,7 +118,7 @@ function configure(decodeOptions) {
 	 * Base32-decode 'input'
 	 *
 	 * @param {string} input
-	 * @returns {Buffer}
+	 * @returns {Uint8Array}
 	 */
 	function decode(input) {
 		if (verifyInput) {
@@ -118,7 +127,7 @@ function configure(decodeOptions) {
 
 		let inputLength = input.length
 		let length = Math.floor((input.length * 5) / 8)
-		let output = Buffer.alloc(length)
+		let output = allocBuffer(length)
 
 		let bits = 0
 		let value = 0

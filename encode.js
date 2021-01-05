@@ -12,6 +12,15 @@ const defaultOptions = {
 	padding: null
 }
 
+// Buffer fallback for browsers
+function stringToBuffer(input) {
+	if (typeof Buffer !== 'undefined') {
+		return Buffer.from(input)
+	} else {
+		return new TextEncoder('utf-8').encode(input)
+	}
+}
+
 function configure(encodeOptions) {
 	const options = { ...defaultOptions, ...encodeOptions }
 
@@ -25,7 +34,7 @@ function configure(encodeOptions) {
 	 */
 	function encode(input) {
 		if (typeof input === 'string') {
-			input = Buffer.from(input)
+			input = stringToBuffer(input)
 		}
 
 		let length = input.length
